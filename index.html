@@ -67,7 +67,7 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{display:flex;flex-direction:column;overflow:hidden;background:var(--lienzo);color:var(--azul);font-family:var(--f-texto);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--barra)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--lienzo)}
 img{max-width:100%;height:auto;display:block}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--foco);outline-offset:2px;border-radius:4px}
@@ -104,6 +104,7 @@ button{font:inherit;color:inherit}
 @media (max-width:760px){ .zoom,.sep{display:none} .btn-indice span{display:none} .btn-indice{padding-inline:8px} .pag-l{display:none} }
 @media (max-width:520px){ .barra .doc,.pag{display:none} .barra{justify-content:space-between;gap:6px} .etapas-ctrl{flex:1;min-width:0} .etapa-ind{flex:1;min-width:0;max-width:none} }
 
+[hidden]{display:none!important}
 /* ───── Riel de etapas ───── */
 .riel{flex:none;background:var(--riel);border-bottom:1px solid var(--panel-linea);overflow-x:auto;scrollbar-width:none;
   padding-block:6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -137,23 +138,23 @@ button{font:inherit;color:inherit}
 .escenario{flex:1;min-height:0;position:relative;overflow:clip}
 .pista{display:flex;height:100%;transition:transform .55s cubic-bezier(.7,0,.2,1)}
 .etapa{flex:0 0 100%;width:100%;height:100%;overflow-y:auto;overscroll-behavior:contain;position:relative;outline:none;
-  padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  display:flex;flex-direction:column;align-items:center;gap:24px}
+  padding:0;background:var(--hoja);
+  display:flex;flex-direction:column;align-items:center;gap:0}
 
 /* ───── Hoja editorial (grilla tomada de "página 1 y 2") ─────
    Hoja de 1080 pt de ancho: márgenes de 70, dos columnas de 407 y medianil de 126.
    --pt convierte un punto del PDF en una fracción del ancho real de la hoja. */
-.hojas{width:min(100%,calc(1080px * var(--zoom)));flex:none;container-type:inline-size;overflow:clip;
-  background:var(--hoja);color:var(--tinta);box-shadow:var(--sombra);
-  --pt:calc(100cqi / 1080);
-  --m:calc(70 * var(--pt));
+.hojas{width:100%;flex:none;container-type:inline-size;overflow:clip;
+  background:var(--hoja);color:var(--tinta);
+  --pt:calc(min(100cqi, 1500px) / 1080);
+  --m:max(calc(70 * var(--pt)), calc((100cqi - 940 * var(--pt)) / 2));
   --col:calc(407 * var(--pt));
   --gut:calc(126 * var(--pt));
   --txt:max(14px, calc(14 * var(--pt)));
   --h2:max(21px, calc(28 * var(--pt)));
   --h3:max(15px, calc(16 * var(--pt)));
   --bloque:calc(100 * var(--pt));
-  padding-bottom:calc(84 * var(--pt))}
+  padding-bottom:0}
 
 /* Tipografía */
 .hojas p,.hojas li,.hojas td,.hojas th,.hojas figcaption{font-size:var(--txt);line-height:1.2;margin:0;color:var(--tinta)}
@@ -169,7 +170,10 @@ button{font:inherit;color:inherit}
 
 /* Bloques y grilla de dos columnas */
 .page{padding-inline:var(--m);margin-top:var(--bloque)}
-.banda+.page{margin-top:calc(56 * var(--pt))}
+/* Cada bloque titulado ocupa la pantalla completa, con su contenido centrado en vertical */
+.hojas>.page{min-height:var(--alto-visor,100vh);margin-top:0!important;display:flex;flex-direction:column;justify-content:center;padding-block:calc(56 * var(--pt));box-sizing:border-box;scroll-snap-align:start}
+.tapa{scroll-snap-align:start}
+.etapa{scroll-snap-type:y proximity}
 .g{display:grid;grid-template-columns:var(--col) var(--col);column-gap:var(--gut);align-items:start}
 .g>*{min-width:0}
 .g .c2{grid-column:2}
@@ -186,21 +190,21 @@ button{font:inherit;color:inherit}
 .placa img.multi{mix-blend-mode:multiply}
 
 /* Banda de sección (01 Rediseño) */
-.banda{background:var(--amarillo-claro);min-height:calc(177 * var(--pt));display:flex;align-items:center;gap:calc(26 * var(--pt));padding-inline:var(--m)}
-.banda-n{position:relative;isolation:isolate;font-family:var(--f-display);font-weight:700;font-size:max(52px,calc(90 * var(--pt)));line-height:1;color:var(--azul);letter-spacing:-.02em;padding-top:.06em}
+.banda{background:var(--amarillo-claro);display:flex;align-items:center;justify-content:center;gap:calc(30 * var(--pt));padding-inline:var(--m)}
+.banda-n{position:relative;isolation:isolate;font-family:var(--f-display);font-weight:700;font-size:max(72px,calc(170 * var(--pt)));line-height:1;color:var(--azul);letter-spacing:-.02em;padding-top:.06em}
 .banda-n::before{content:"";position:absolute;z-index:-1;width:1.26em;height:1.14em;left:.04em;top:50%;transform:translateY(-52%);background:url("img/forma_num.svg") center/100% 100% no-repeat}
 .banda-t{display:flex;flex-direction:column;gap:2px;min-width:0}
-.banda-t h2{font-size:max(30px,calc(50 * var(--pt)));font-weight:900;line-height:1;margin:0}
-.banda-t p{font-size:max(14px,calc(16 * var(--pt)));color:var(--azul);text-align:left}
+.banda-t h2{font-size:max(34px,calc(88 * var(--pt)));font-weight:900;line-height:1;margin:0}
+.banda-t p{font-size:max(15px,calc(24 * var(--pt)));color:var(--azul);text-align:left}
 
 /* Portada */
-.portada{position:relative;margin-top:0;padding-inline:var(--m);background:var(--amarillo);height:calc(472 * var(--pt));overflow:hidden;text-align:center;
-  display:flex;flex-direction:column;align-items:center;padding-top:calc(64 * var(--pt))}
+.portada{position:relative;margin-top:0;padding-inline:var(--m);background:var(--amarillo);overflow:hidden;text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
 .portada>*{position:relative;z-index:1}
-.portada .huella{position:absolute;z-index:0;width:calc(480 * var(--pt));left:calc(-70 * var(--pt));top:calc(-40 * var(--pt));opacity:.42;transform:rotate(-8deg)}
-.portada .por-top{font-size:max(15px,calc(20 * var(--pt)));color:var(--azul);text-align:center}
-.portada h1{font-size:max(30px,calc(60 * var(--pt)));font-weight:800;line-height:1.1;color:var(--azul);margin:calc(92 * var(--pt)) 0 0;white-space:nowrap;letter-spacing:-.005em}
-.portada .por-sub{font-size:max(17px,calc(28 * var(--pt)));font-weight:700;color:var(--azul);text-align:center;margin-top:calc(4 * var(--pt))}
+.portada .huella{position:absolute;z-index:0;width:calc(var(--alto-visor,100vh) * 1.027);left:calc(var(--alto-visor,100vh) * -0.175);top:calc(var(--alto-visor,100vh) * 0.0575);opacity:.42;transform:rotate(18.75deg)}
+.portada .por-top{position:absolute!important;top:max(28px,calc(64 * var(--pt)));left:0;right:0;font-size:max(15px,calc(22 * var(--pt)));color:var(--azul);text-align:center}
+.portada h1{font-size:max(30px,calc(80 * var(--pt)));font-weight:800;line-height:1.1;color:var(--azul);margin:0;white-space:nowrap;letter-spacing:-.005em}
+.portada .por-sub{font-size:max(17px,calc(34 * var(--pt)));font-weight:700;color:var(--azul);text-align:center;margin-top:calc(4 * var(--pt))}
 
 /* Foto de Balton con forma orgánica */
 .blob{width:calc(290 * var(--pt));justify-self:center}
@@ -241,6 +245,9 @@ button{font:inherit;color:inherit}
 .regla{display:flex;flex-direction:column;align-items:center;gap:calc(8 * var(--pt));font-size:max(13px,calc(16 * var(--pt)));font-weight:700;color:var(--azul)}
 .regla i{display:block;width:100%;height:calc(14 * var(--pt));min-height:10px;background:linear-gradient(var(--celeste),var(--celeste)) center/100% 3px no-repeat;border-inline:3px solid var(--celeste)}
 
+.reduc-2f{row-gap:calc(48 * var(--pt));padding-block:calc(30 * var(--pt)) calc(36 * var(--pt))}
+.reduc-2f .regla{flex-direction:column;align-self:end;margin-bottom:calc(14 * var(--pt))}
+.reduc-2f img{align-self:center}
 /* Marca sobre fondo de color */
 .mosaico{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(4 * var(--pt));padding:calc(9 * var(--pt))}
 .mosaico div{border-radius:calc(10 * var(--pt));display:grid;place-items:center;height:calc(171 * var(--pt));min-height:84px}
@@ -320,7 +327,7 @@ button{font:inherit;color:inherit}
 .cierre-logo{width:calc(330 * var(--pt));align-self:center;justify-self:center}
 
 /* Pase lateral entre etapas */
-.pase{width:min(100%,calc(1080px * var(--zoom)));flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pase{width:min(calc(100% - 2 * max(20px,env(safe-area-inset-left,0px))),1080px);margin:8px auto 48px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .pase button{border:0;cursor:pointer;font:inherit;text-align:left}
 .pase-iconos{display:flex;align-items:center;gap:6px;background:var(--hoja);border-radius:14px;padding:6px 10px;box-shadow:var(--sombra)}
 .ico-btn{background:none;width:46px;height:46px;border-radius:10px;display:grid;place-items:center}
@@ -343,11 +350,7 @@ button{font:inherit;color:inherit}
   .g>h2+h2{margin-top:0}
   .g .c2{grid-column:auto}
   .fila-h3{margin-top:0}
-  .banda{padding-block:22px;gap:16px}
-  .banda+.page{margin-top:32px}
-  .portada{height:auto;padding-top:28px;padding-bottom:48px}
-  .portada h1{white-space:normal;text-wrap:balance;margin-top:40px}
-  .portada .huella{width:110%;left:-30%;top:-10%}
+  .hojas>.page{padding-block:44px}
   .blob{width:min(78%,300px)}
   .placa.ancha,.placa.media{margin-inline:-20px;padding-inline:20px}
   .placa{margin-inline:-20px}
@@ -380,8 +383,13 @@ button{font:inherit;color:inherit}
 }
 
 /* Franja lateral con el color de la categoría de redes */
+/* Versiones sobre fondo negativo: el bloque entero va sobre negro */
+.hojas>.pagina-negra{background:var(--placa-negra)}
+.pagina-negra h2{color:#fff}
+.pagina-negra .regla{color:#fff}
+.pagina-negra .placa-negra{background:none;padding-block:calc(30 * var(--pt)) 0}
 .cat-franja{position:relative}
-.cat-franja::before{content:"";position:absolute;left:0;top:calc(-30 * var(--pt));bottom:calc(-30 * var(--pt));width:max(8px,calc(16 * var(--pt)));background:var(--cat)}
+.cat-franja::before{content:"";position:absolute;left:0;top:0;bottom:0;width:max(8px,calc(16 * var(--pt)));background:var(--cat)}
 /* Carrusel interactivo (Adopción) */
 .carru{width:calc(300 * var(--pt));min-width:220px;justify-self:center;display:flex;flex-direction:column;align-items:center;gap:calc(12 * var(--pt))}
 .carru-marco{position:relative;width:100%;box-shadow:0 6px 18px rgba(15,53,122,.14)}
@@ -435,25 +443,54 @@ button{font:inherit;color:inherit}
 img.ampliable{cursor:zoom-in}
 .visor-img{display:block;max-width:92vw;max-height:88vh;width:auto;height:auto;box-shadow:0 20px 60px rgba(0,0,0,.45);animation:visor-in .35s cubic-bezier(.2,.8,.25,1)}
 @media (prefers-reduced-motion:reduce){.visor-img{animation:none}}
-/* Tarjeta de presentación en 3D: las dos caras entran girando y quedan flotando */
-.tarj3d{position:relative;width:calc(470 * var(--pt));aspect-ratio:772/514;margin:0 auto;perspective:1100px;padding-block:calc(18 * var(--pt))}
-.tarj3d img{position:absolute;display:block}
-.t3-sombra{inset:0;width:100%;height:100%}
-.t3-card{will-change:transform;transform-origin:50% 50%;max-width:none}
-.t3-frente{left:31.48%;top:11.67%;width:39.12%;height:42.32%}
-.t3-dorso{left:26.36%;top:41.63%;width:43.39%;height:45.82%}
-.js-anim .tarj3d:not(.visto) img{opacity:0}
-.js-anim .tarj3d.visto .t3-sombra{animation:t3-sombra 1.2s ease .5s both}
-.js-anim .tarj3d.visto .t3-dorso{animation:t3-in-dorso 1.4s cubic-bezier(.2,.75,.25,1) both,t3-flota-d 7s ease-in-out 1.4s infinite alternate}
-.js-anim .tarj3d.visto .t3-frente{animation:t3-in-frente 1.5s cubic-bezier(.2,.75,.25,1) .25s both,t3-flota-f 6s ease-in-out 1.75s infinite alternate}
+/* Tarjeta de presentación en 3D: entran girando por separado y después flotan juntas (sin abrir huecos).
+   Cada tarjeta proyecta su propia sombra y hay una sombra de contacto en el piso que acompaña el flotado. */
+.tarj3d{position:relative;width:calc(470 * var(--pt));aspect-ratio:772/514;margin:0 auto;perspective:1200px;padding-block:calc(18 * var(--pt))}
+.t3-grupo{position:absolute;inset:0;transform-style:flat;will-change:transform;perspective:1200px}
+.t3-card{transform-style:flat}
+.t3-card{position:absolute;display:block;max-width:none;will-change:transform;transform-origin:50% 50%}
+.t3-frente{left:31.48%;top:11.67%;width:39.12%;height:42.32%;
+  filter:drop-shadow(0 2px 2px rgba(25,30,50,.22)) drop-shadow(0 12px 16px rgba(25,30,60,.24))}
+.t3-dorso{left:26.30%;top:41.54%;width:43.52%;height:46.01%;
+  filter:drop-shadow(0 2px 2px rgba(25,30,50,.18)) drop-shadow(0 14px 18px rgba(25,30,60,.18))}
+.t3-suelo{position:absolute;left:24%;width:50%;top:86%;height:9%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(30,34,50,.38),rgba(30,34,50,.12) 60%,transparent);filter:blur(6px);transform-origin:50% 50%}
+.js-anim .tarj3d:not(.visto) .t3-card,.js-anim .tarj3d:not(.visto) .t3-suelo{opacity:0}
+.js-anim .tarj3d.visto .t3-suelo{animation:t3-suelo-in 1s ease .6s both,t3-suelo 6s ease-in-out 1.7s infinite alternate}
+.js-anim .tarj3d.visto .t3-dorso{animation:t3-in-dorso 1.4s cubic-bezier(.2,.75,.25,1) both}
+.js-anim .tarj3d.visto .t3-frente{animation:t3-in-frente 1.5s cubic-bezier(.2,.75,.25,1) .25s both}
+
+.js-anim .tarj3d.visto .t3-grupo{animation:t3-flota 6s ease-in-out 1.75s infinite alternate}
 @keyframes t3-in-dorso{0%{opacity:0;transform:translate3d(-6%,-28%,0) rotateY(-260deg) rotateX(28deg) scale(.6)}25%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes t3-in-frente{0%{opacity:0;transform:translate3d(8%,-40%,0) rotateY(300deg) rotateX(-24deg) scale(.6)}25%{opacity:1}100%{opacity:1;transform:none}}
-@keyframes t3-flota-f{0%{transform:none}50%{transform:translate3d(0,-2.5%,0) rotateY(7deg) rotateX(-4deg)}100%{transform:translate3d(0,-1%,0) rotateY(-5deg) rotateX(3deg)}}
-@keyframes t3-flota-d{0%{transform:none}50%{transform:translate3d(0,1.5%,0) rotateY(-6deg) rotateX(5deg)}100%{transform:translate3d(0,.5%,0) rotateY(4deg) rotateX(-3deg)}}
-@keyframes t3-sombra{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){.js-anim .tarj3d.visto img{animation:none!important;opacity:1}}
+@keyframes t3-flota{0%{transform:none}50%{transform:translate3d(0,-2.2%,0) rotateY(6deg) rotateX(-3deg)}100%{transform:translate3d(0,-.8%,0) rotateY(-4deg) rotateX(2deg)}}
+@keyframes t3-suelo{0%{transform:none;opacity:1}50%{transform:scale(.9,.85);opacity:.78}100%{transform:scale(.96,.94);opacity:.92}}
+@keyframes t3-suelo-in{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.js-anim .tarj3d.visto .t3-card,.js-anim .tarj3d.visto .t3-grupo,.js-anim .tarj3d.visto .t3-suelo{animation:none!important;opacity:1}}
 .hex{white-space:nowrap;font-weight:700;color:var(--azul);font-variant-numeric:tabular-nums}
 .hex::before{content:"";display:inline-block;width:.8em;height:.8em;border-radius:50%;background:var(--c);margin:0 .3em -.05em .05em;box-shadow:inset 0 0 0 1px rgba(15,53,122,.25)}
+/* Tapas a pantalla completa: portada y títulos de sección ocupan todo el visor */
+.etapa{--pl:max(16px,env(safe-area-inset-left,0px));--pr:max(16px,env(safe-area-inset-right,0px))}
+.tapa{--pt:calc(min(100vw,1500px) / 1080);--m:max(20px,calc(70 * var(--pt)));
+  flex:none;align-self:stretch;position:relative;margin:0;
+  min-height:var(--alto-visor,calc(100dvh - 104px));box-sizing:border-box;padding-block:72px}
+.tapa p{margin:0}
+.tapa-sigue{position:absolute!important;left:50%;bottom:22px;width:40px;height:40px;margin-left:-20px;border-radius:50%;display:grid;place-items:center;color:var(--azul);background:color-mix(in srgb,#fff 45%,transparent);animation:tapa-sigue 1.8s ease-in-out infinite}
+.tapa-sigue svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes tapa-sigue{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@media (max-width:720px){
+  .tapa{--pt:calc(100vw / 720)}
+  .portada h1{white-space:normal;text-wrap:balance;font-size:clamp(32px,10vw,46px)}
+  .portada .huella{width:110%;left:-30%;top:-6%}
+  .banda{flex-direction:column;text-align:center;gap:10px}
+  .banda-t{align-items:center}
+  .banda-t p{text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.tapa-sigue{animation:none}}
+.stk-img{width:calc(330 * var(--pt));min-width:220px;justify-self:start;align-self:start;margin-top:calc(4 * var(--pt))}
+.stk-uso{display:block;width:auto;max-width:100%;height:auto;max-height:calc(var(--alto-visor,100vh) - 112 * var(--pt));margin:0 auto;border-radius:calc(6 * var(--pt))}
+.c2>.tabla-wrap table{min-width:0}
+.pin-img{mix-blend-mode:multiply}
 /* Intervención morfológica: el contorno cyan se dibuja con un trazado */
 .trazado{position:relative;margin:0}
 .trazado img{display:block;width:100%;height:auto}
@@ -479,7 +516,7 @@ img.ampliable{cursor:zoom-in}
 <body>
 <a class="saltar" href="#apertura" id="saltar">Saltar al documento</a>
 
-<header class="barra">
+<header class="barra" hidden>
   <div class="doc">
     <span class="avatar-mini" aria-hidden="true"><img src="img/symbol.webp" alt=""></span>
     <div class="doc-txt"><strong>Manual de identidad visual</strong><span>La Casita de Balton · Hogar de rescate y adopción · 2026</span></div>
@@ -490,7 +527,7 @@ img.ampliable{cursor:zoom-in}
     <button class="btn" id="et-next" type="button" aria-label="Etapa siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div>
   <span class="sep" aria-hidden="true"></span>
-  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 28</span></label>
+  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 34</span></label>
   <span class="sep" aria-hidden="true"></span>
   <div class="ctrl zoom" role="group" aria-label="Zoom">
     <button class="btn" id="zoom-menos" type="button" aria-label="Alejar"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
@@ -501,21 +538,22 @@ img.ampliable{cursor:zoom-in}
   <button class="btn btn-indice" id="btn-indice" type="button" aria-expanded="false" aria-controls="panel"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>Índice</span></button>
 </header>
 
-<nav class="riel" id="riel" aria-label="Secciones del manual"><ol><li><button type="button" data-etapa="0"><span class="rn">00</span><span class="rt">Apertura</span></button></li><li><button type="button" data-etapa="1"><span class="rn">01</span><span class="rt">Rediseño</span></button></li><li><button type="button" data-etapa="2"><span class="rn">02</span><span class="rt">Piezas digitales</span></button></li><li><button type="button" data-etapa="3"><span class="rn">03</span><span class="rt">Piezas analógicas</span></button></li></ol></nav>
+<nav class="riel" id="riel" aria-label="Secciones del manual" hidden><ol><li><button type="button" data-etapa="0"><span class="rn">00</span><span class="rt">Apertura</span></button></li><li><button type="button" data-etapa="1"><span class="rn">01</span><span class="rt">Rediseño</span></button></li><li><button type="button" data-etapa="2"><span class="rn">02</span><span class="rt">Piezas digitales</span></button></li><li><button type="button" data-etapa="3"><span class="rn">03</span><span class="rt">Piezas analógicas</span></button></li></ol></nav>
 <main class="escenario" id="escenario" lang="es">
 <nav class="panel" id="panel" aria-label="Índice del documento" hidden></nav>
 <div class="velo" id="velo" hidden></div>
 <div class="pista" id="pista">
 <!-- ═════════════ ETAPA 1 · APERTURA (página 1 del PDF de referencia) ═════════════ -->
 <section class="etapa" id="apertura" data-i="0" data-nombre="Apertura" data-n="" aria-roledescription="etapa" aria-label="Apertura" tabindex="-1">
-<div class="hojas">
-
-  <header class="page portada" id="portada" data-t="Portada" aria-labelledby="t-portada">
+<header class="page portada tapa" id="portada" data-t="Portada" aria-labelledby="t-portada">
     <img class="huella" src="img/paw.webp" alt="" aria-hidden="true">
     <p class="por-top">Rediseño de marca 2026</p>
     <h1 id="t-portada">Manual de identidad visual</h1>
     <p class="por-sub">La Casita de Balton - Hogar de rescate y adopción</p>
-  </header>
+  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+<div class="hojas">
+
+  
 
   <article class="page" id="consideraciones" data-t="Consideraciones generales" aria-labelledby="t-cons" style="margin-top:calc(53 * var(--pt))">
     <div class="g">
@@ -544,12 +582,13 @@ img.ampliable{cursor:zoom-in}
 
 <!-- ═════════════ ETAPA 2 · 01 REDISEÑO (página 2 del PDF de referencia) ═════════════ -->
 <section class="etapa" id="rediseno-marca" data-i="1" data-nombre="Rediseño" data-n="01" aria-roledescription="etapa" aria-labelledby="t-s01" tabindex="-1" inert>
-<div class="hojas">
-
-  <header class="banda">
+<header class="banda tapa">
     <span class="banda-n" aria-hidden="true">01</span>
     <div class="banda-t"><h2 id="t-s01"><span class="sr-only">01 </span>Rediseño</h2><p>Análisis de la marca madre, ecuación del rediseño</p></div>
-  </header>
+  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+<div class="hojas">
+
+  
 
   <article class="page" id="analisis" data-t="Análisis de la marca madre" aria-labelledby="t-ana">
     <div class="g">
@@ -645,7 +684,7 @@ img.ampliable{cursor:zoom-in}
     </div>
   </article>
 
-  <article class="page" id="negativo" data-t="Versiones sobre fondo negativo" aria-labelledby="t-neg">
+  <article class="page pagina-negra" id="negativo" data-t="Versiones sobre fondo negativo" aria-labelledby="t-neg">
     <div class="g">
       <h2 id="t-neg">Versión color, fondo negativo</h2>
       <h2 class="c2">Versión B&amp;N, fondo negativo</h2>
@@ -659,16 +698,16 @@ img.ampliable{cursor:zoom-in}
   </article>
 
   <article class="page" id="reducciones" data-t="Reducciones" aria-labelledby="t-redu">
-    <h2 id="t-redu">Reducciones</h2>
+    <h2 id="t-redu">Reducciones: Marca versión color / blanco y negro</h2>
     <div class="placa ancha">
-      <div class="reduc">
-        <img style="--w:5" src="img/logo_color.webp" alt="Isologotipo reducido a 5 cm" loading="lazy">
-        <img style="--w:3" src="img/logo_color.webp" alt="Isologotipo reducido a 3 cm" loading="lazy">
-        <img style="--w:2.5" src="img/logo_color.webp" alt="Isologotipo reducido a 2,5 cm" loading="lazy">
-        <div class="regla" style="--w:5"><span>5 cm</span><i></i></div>
-        <div class="regla" style="--w:3"><span>3 cm</span><i></i></div>
-        <div class="regla" style="--w:2.5"><span>2,5 cm</span><i></i></div>
-      </div>
+      <div class="reduc reduc-2f"><div class="regla" style="--w:5"><span>5 cm</span><i></i></div><div class="regla" style="--w:3"><span>3 cm</span><i></i></div><div class="regla" style="--w:2.5"><span>2,5 cm</span><i></i></div><img style="--w:5" src="img/logo_color.webp" alt="Versión color reducida a 5 cm" loading="lazy"><img style="--w:3" src="img/logo_color.webp" alt="Versión color reducida a 3 cm" loading="lazy"><img style="--w:2.5" src="img/logo_color.webp" alt="Versión color reducida a 2,5 cm" loading="lazy"><img style="--w:5" src="img/logo_bn.webp" alt="Versión blanco y negro reducida a 5 cm" loading="lazy"><img style="--w:3" src="img/logo_bn.webp" alt="Versión blanco y negro reducida a 3 cm" loading="lazy"><img style="--w:2.5" src="img/logo_bn.webp" alt="Versión blanco y negro reducida a 2,5 cm" loading="lazy"></div>
+    </div>
+  </article>
+
+  <article class="page pagina-negra" id="reducciones-negativo" data-t="Reducciones sobre fondo negativo" aria-labelledby="t-redu-neg">
+    <h2 id="t-redu-neg">Reducciones: Marca versión color / blanco y negro<br> sobre fondo negativo</h2>
+    <div class="placa ancha" style="background:none">
+      <div class="reduc reduc-2f"><div class="regla" style="--w:5"><span>5 cm</span><i></i></div><div class="regla" style="--w:3"><span>3 cm</span><i></i></div><div class="regla" style="--w:2.5"><span>2,5 cm</span><i></i></div><img style="--w:5" src="img/logo_neg_color.webp" alt="Versión color sobre fondo negativo reducida a 5 cm" loading="lazy"><img style="--w:3" src="img/logo_neg_color.webp" alt="Versión color sobre fondo negativo reducida a 3 cm" loading="lazy"><img style="--w:2.5" src="img/logo_neg_color.webp" alt="Versión color sobre fondo negativo reducida a 2,5 cm" loading="lazy"><img style="--w:5" src="img/logo_neg_bn.webp" alt="Versión blanco y negro sobre fondo negativo reducida a 5 cm" loading="lazy"><img style="--w:3" src="img/logo_neg_bn.webp" alt="Versión blanco y negro sobre fondo negativo reducida a 3 cm" loading="lazy"><img style="--w:2.5" src="img/logo_neg_bn.webp" alt="Versión blanco y negro sobre fondo negativo reducida a 2,5 cm" loading="lazy"></div>
     </div>
   </article>
 
@@ -772,12 +811,13 @@ img.ampliable{cursor:zoom-in}
 
 <!-- ═════════════ ETAPA 3 · 02 PIEZAS DIGITALES ═════════════ -->
 <section class="etapa" id="piezas-digitales" data-i="2" data-nombre="Piezas digitales" data-n="02" aria-roledescription="etapa" aria-labelledby="t-s02" tabindex="-1" inert>
-<div class="hojas">
-
-  <header class="banda">
+<header class="banda tapa">
     <span class="banda-n" aria-hidden="true">02</span>
     <div class="banda-t"><h2 id="t-s02"><span class="sr-only">02 </span>Piezas digitales</h2><p>Redes sociales y ficha técnica</p></div>
-  </header>
+  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+<div class="hojas">
+
+  
 
   <article class="page" id="perfil" data-t="Perfil" aria-labelledby="t-per">
     <div class="g">
@@ -917,12 +957,13 @@ img.ampliable{cursor:zoom-in}
 
 <!-- ═════════════ ETAPA 4 · 03 PIEZAS ANALÓGICAS ═════════════ -->
 <section class="etapa" id="piezas-analogicas" data-i="3" data-nombre="Piezas analógicas" data-n="03" aria-roledescription="etapa" aria-labelledby="t-s03" tabindex="-1" inert>
-<div class="hojas">
-
-  <header class="banda">
+<header class="banda tapa">
     <span class="banda-n" aria-hidden="true">03</span>
     <div class="banda-t"><h2 id="t-s03"><span class="sr-only">03 </span>Piezas analógicas</h2><p>Tarjeta de presentación, indumentaria institucional y ficha técnica</p></div>
-  </header>
+  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+<div class="hojas">
+
+  
 
   <article class="page" id="tarjeta" data-t="Tarjeta de presentación" aria-labelledby="t-tar">
     <div class="g">
@@ -940,9 +981,11 @@ img.ampliable{cursor:zoom-in}
       </div>
     </div>
     <div class="placa"><div class="tarj3d" role="img" aria-label="Maqueta de la tarjeta: frente con nombre, cargo y datos de contacto junto a la silueta de un perro mirando hacia arriba; dorso con el isologotipo centrado sobre una trama suave">
-      <img class="t3-sombra" src="img/tarj_sombra.png" alt="" width="1544" height="1028" loading="lazy">
-      <img class="t3-card t3-dorso" src="img/tarj_dorso.png" alt="" width="670" height="471" loading="lazy">
-      <img class="t3-card t3-frente" src="img/tarj_frente.png" alt="" width="604" height="435" loading="lazy">
+      <span class="t3-suelo" aria-hidden="true"></span>
+      <div class="t3-grupo">
+        <img class="t3-card t3-dorso" src="img/tarj_dorso.png" alt="" width="672" height="473" loading="lazy">
+        <img class="t3-card t3-frente" src="img/tarj_frente.png" alt="" width="604" height="435" loading="lazy">
+      </div>
     </div></div>
   </article>
 
@@ -1002,6 +1045,61 @@ img.ampliable{cursor:zoom-in}
     </div>
   </article>
 
+  <article class="page" id="stickers" data-t="Stickers" aria-labelledby="t-stk">
+    <div class="g">
+      <h2 class="todo" id="t-stk">Stickers</h2>
+      <img class="stk-img gota-logo resalta ampliable" tabindex="0" role="button" aria-haspopup="dialog" src="img/stickers.webp" alt="Plancha de stickers: dos versiones del isologotipo, una sobre amarillo y otra sobre azul; nueve stickers con huella, gato, perro jugando, rostro de Balton, círculo Sumate con perrito, círculo Adoptá con casita, corazón, casita con ¡Sumate! y huella con ¡Adoptá!; abajo la cuenta @lacasitadebalton" width="710" height="932" loading="lazy">
+      <div class="c2">
+        <h3>Sistema gráfico</h3>
+        <p>Combina <strong>versiones de la marca e ilustraciones de huellas, corazones, casas y animales</strong>, con formas simples y contornos definidos. El azul unifica el conjunto, mientras los fondos amarillos, verdes y violetas aportan variedad.</p>
+        <h3 class="mt">Aplicación</h3>
+        <p>Los stickers pueden combinarse en distintas superficies. La plancha incluye <strong>la cuenta de Instagram como contacto.</strong></p>
+        <h3 class="mt">Composición</h3>
+        <p>El <strong>formato circular</strong> integra la marca, símbolos y mensajes como “Un hogar cambia vidas”, “Adoptá para siempre” y “Más juegos, más amor”.</p>
+        <h3 class="mt">Continuidad visual</h3>
+        <p>Los pines comparten <strong>colores, ilustraciones y recursos gráficos</strong> con los stickers, reforzando el reconocimiento de la identidad.</p>
+      </div>
+    </div>
+</article>
+
+  <article class="page" id="stickers-aplicados" data-t="Stickers aplicados" aria-label="Stickers aplicados">
+    <img class="stk-uso gota-logo ampliable" tabindex="0" role="button" aria-haspopup="dialog" src="img/stickers_uso.webp" alt="Stickers de La Casita de Balton aplicados: en una botella térmica verde, el rostro de Balton, el perro jugando, una huella y el isologotipo sobre amarillo; en la tapa de una notebook gris, el isologotipo, el círculo Adoptá con casita, la huella ¡Adoptá! y el corazón" width="1536" height="1024" loading="lazy">
+  </article>
+
+  <article class="page" id="pines" data-t="Pines" aria-labelledby="t-pin">
+    <div class="g">
+      <h2 class="todo" id="t-pin">Pines</h2>
+      <img class="stk-img pin-img gota-logo resalta ampliable" tabindex="0" role="button" aria-haspopup="dialog" src="img/pines.webp" alt="Doce pines circulares en cuatro filas: rostro de Balton, isologotipo y una frase con ilustración, sobre fondos amarillo, violeta, azul y verde. Las frases son Un hogar cambia vidas, Adoptá para siempre, Soy parte de la casita y Más juegos más amor" width="676" height="924" loading="lazy">
+      <div class="c2">
+        <h3>Pines</h3>
+        <p>Funcionan como distintivos de pertenencia y difusión en prendas, bolsos y mochilas, <strong>visibilizando el vínculo con La Casita de Balton.</strong></p>
+        <h3 class="mt">Sistema gráfico</h3>
+        <p>Combina <strong>versiones de la marca, ilustraciones y frases sobre adopción y cuidado animal</strong>. El azul y los fondos amarillos, verdes y violetas mantienen la coherencia con la identidad institucional.</p>
+        <h3 class="mt">Composición</h3>
+        <p>El <strong>formato circular</strong> combina la marca, ilustraciones y mensajes que promueven la adopción y el cuidado animal.</p>
+        <h3 class="mt">Continuidad visual</h3>
+        <p>Retoman los <strong>colores y recursos gráficos de los stickers</strong>, reforzando la unidad del sistema y el reconocimiento de la organización.</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="page" id="pines-aplicados" data-t="Pines aplicados" aria-label="Pines aplicados">
+    <img class="stk-uso gota-logo ampliable" tabindex="0" role="button" aria-haspopup="dialog" src="img/pines_uso.webp" alt="Tarjeta de cartón kraft con el isologotipo de La Casita de Balton y tres pines: amarillo con casita y la frase Un hogar cambia vidas, azul con el rostro de Balton en amarillo y verde con un perrito y la frase Más juegos, más amor" width="1207" height="1303" loading="lazy">
+  </article>
+
+  <article class="page" id="ficha-stickers-pines" data-t="Ficha técnica: stickers y pines" aria-labelledby="t-fsp">
+    <h2 id="t-fsp">Ficha técnica</h2>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th scope="col">Pieza</th><th scope="col">Medida</th><th scope="col">Escala</th><th scope="col">Material y terminación propuestos</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Stickers</th><td>Plancha A4: 21 × 29,7 cm</td><td>1:1</td><td>Vinilo autoadhesivo, impresión a color y corte de contorno.</td></tr>
+          <tr><th scope="row">Pines</th><td>5 cm de diámetro</td><td>1:1</td><td>Base metálica con prendedor, impresión a color y película protectora.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
 </div>
 <nav class="pase" aria-label="Navegación de la sección"><div class="pase-iconos"><button type="button" class="ico-btn" data-s="prev" aria-label="Volver a la sección anterior: Piezas digitales"><img src="img/ico_flecha.webp" alt="" style="transform:rotate(-90deg)"></button><button type="button" class="ico-btn" data-s="top" aria-label="Volver al inicio de esta sección"><img src="img/ico_flecha.webp" alt=""></button><button type="button" class="ico-btn" data-s="home" aria-label="Ir a la portada"><img src="img/ico_casa.webp" alt=""></button><button type="button" class="ico-btn" data-s="index" aria-label="Abrir el índice"><img src="img/ico_info.webp" alt=""></button></div><button type="button" class="pase-next" data-s="first"><span class="pase-txt"><small>Fin del manual</small><b>Volver a la portada</b></span><img class="pase-ico" src="img/ico_casa.webp" alt=""></button></nav>
 </section>
@@ -1027,14 +1125,23 @@ img.ampliable{cursor:zoom-in}
   var panel=document.getElementById('panel'), velo=document.getElementById('velo'), btnInd=document.getElementById('btn-indice');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Alto disponible para las tapas a pantalla completa
+  var esc=document.getElementById('escenario');
+  function altoVisor(){ document.documentElement.style.setProperty('--alto-visor',esc.clientHeight+'px') }
+  altoVisor(); window.addEventListener('resize',altoVisor);
+
   // Entrada de títulos (una vez por título)
   if(!reduce && 'IntersectionObserver' in window){
-    var tits=[].slice.call(document.querySelectorAll('.hojas h1, .hojas h2, .banda-n, .gota, .gota-logo, .trazado, .tarj3d'));
+    var tits=[].slice.call(document.querySelectorAll('.hojas h1, .hojas h2, .tapa h1, .tapa h2, .banda-n, .gota, .gota-logo, .trazado, .tarj3d'));
     tits.forEach(function(t){ if(/^H[12]$/.test(t.tagName)) t.classList.add('anim-tit') });
     document.documentElement.classList.add('js-anim');
     var ioTit=new IntersectionObserver(function(es){
-      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visto'); ioTit.unobserve(en.target) } });
-    },{threshold:0.35});
+      // entra: se anima; sale por completo de la pantalla: se reinicia para volver a animarse
+      es.forEach(function(en){
+        if(en.isIntersecting && en.intersectionRatio>=0.3) en.target.classList.add('visto');
+        else if(!en.isIntersecting) en.target.classList.remove('visto');
+      });
+    },{threshold:[0,0.3]});
     tits.forEach(function(t){ ioTit.observe(t) });
     document.querySelectorAll('.trazado .trazo path').forEach(function(p,i,all){ p.style.animationDelay=(i/all.length*0.9).toFixed(2)+'s' });
   }
@@ -1089,6 +1196,8 @@ img.ampliable{cursor:zoom-in}
     if(cambio) et.focus({preventScroll:true});
     var p=destino!=null?destino:(alFinal?ultimaDe(e):primeraDe(e));
     marcar(p);
+    // en la tapa de la sección, el enlace apunta a la sección (no a su primera hoja)
+    if(destino==null && !alFinal && et.querySelector('.tapa:not(.page)')){ try{ history.replaceState(null,'','#'+et.id) }catch(err){} }
   }
   function primeraDe(e){ return etapaDe.indexOf(e) }
   function ultimaDe(e){ return etapaDe.lastIndexOf(e) }
@@ -1237,7 +1346,6 @@ img.ampliable{cursor:zoom-in}
 
   // Zoom
   var zoom=1, zv=document.getElementById('zoom-val');
-  try{ var z=parseFloat(localStorage.getItem('balton-zoom')); if(z>=.6&&z<=1.4) zoom=z }catch(e){}
   function aplicarZoom(){ document.documentElement.style.setProperty('--zoom',zoom); zv.textContent=Math.round(zoom*100)+'%'; try{localStorage.setItem('balton-zoom',zoom)}catch(e){} }
   document.getElementById('zoom-mas').addEventListener('click',function(){ zoom=Math.min(1.4,Math.round((zoom+.1)*10)/10); aplicarZoom() });
   document.getElementById('zoom-menos').addEventListener('click',function(){ zoom=Math.max(.6,Math.round((zoom-.1)*10)/10); aplicarZoom() });

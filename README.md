@@ -7,7 +7,7 @@ Se lee como un documento editorial: cada sección se recorre hacia abajo y se pa
 - **Apertura:** portada, consideraciones generales y presentación.
 - **01 Rediseño:** análisis de la marca madre, isologotipo, construcción, versiones, normas de uso, tipografía y paleta.
 - **02 Piezas digitales:** perfil, código cromático, carruseles de adopción y educativo, jornadas, historias y ficha técnica.
-- **03 Piezas analógicas:** tarjeta de presentación, indumentaria y ficha técnica.
+- **03 Piezas analógicas:** tarjeta de presentación, indumentaria, ficha técnica, stickers, pines y su ficha técnica.
 
 ## Ver el sitio
 
