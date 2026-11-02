@@ -491,6 +491,20 @@ img.ampliable{cursor:zoom-in}
 .stk-uso{display:block;width:auto;max-width:100%;height:auto;max-height:calc(var(--alto-visor,100vh) - 112 * var(--pt));margin:0 auto;border-radius:calc(6 * var(--pt))}
 .c2>.tabla-wrap table{min-width:0}
 .pin-img{mix-blend-mode:multiply}
+.libro-img{display:block;width:auto;max-width:100%;max-height:calc(var(--alto-visor,100vh) * .5);margin:0 auto;border-radius:calc(6 * var(--pt))}
+/* Libro digital: tarjeta que abre el flipbook; fuera de Claude se inserta el lector embebido */
+.libd{display:flex;justify-content:center}
+.libd-card{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:calc(40 * var(--pt));text-decoration:none;background:var(--amarillo);border-radius:calc(14 * var(--pt));padding:calc(28 * var(--pt)) calc(48 * var(--pt)) calc(28 * var(--pt)) calc(28 * var(--pt));max-width:100%;box-shadow:0 10px 30px rgba(15,53,122,.14)}
+.libd-tapa{width:calc(200 * var(--pt));min-width:120px;border-radius:4px;box-shadow:0 8px 20px rgba(15,53,122,.25)}
+.libd-txt{display:flex;flex-direction:column;gap:calc(10 * var(--pt));color:var(--azul)}
+.libd-k{font-size:max(12px,calc(14 * var(--pt)));font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.libd-t{font-family:var(--f-display);font-weight:700;font-size:max(30px,calc(56 * var(--pt)));line-height:1}
+.libd-b{display:inline-flex;align-items:center;gap:.5em;align-self:start;background:var(--azul);color:#fff;font-weight:800;font-size:max(15px,calc(18 * var(--pt)));padding:.7em 1.3em;border-radius:999px;margin-top:calc(8 * var(--pt))}
+.libd-b svg{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.libd-u{font-size:max(12px,calc(13 * var(--pt)));opacity:.75}
+.libd-card:focus-visible{outline:3px solid var(--azul);outline-offset:4px}
+.libd iframe{width:100%;height:calc(var(--alto-visor,100vh) * .72);border:0;border-radius:calc(8 * var(--pt));background:#fff}
+@container (max-width:720px){ .libd-card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px} .libd-txt{align-items:center} .libd-b{align-self:center} }
 /* Intervención morfológica: el contorno cyan se dibuja con un trazado */
 .trazado{position:relative;margin:0}
 .trazado img{display:block;width:100%;height:auto}
@@ -527,7 +541,7 @@ img.ampliable{cursor:zoom-in}
     <button class="btn" id="et-next" type="button" aria-label="Etapa siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div>
   <span class="sep" aria-hidden="true"></span>
-  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 34</span></label>
+  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 36</span></label>
   <span class="sep" aria-hidden="true"></span>
   <div class="ctrl zoom" role="group" aria-label="Zoom">
     <button class="btn" id="zoom-menos" type="button" aria-label="Alejar"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
@@ -1100,6 +1114,46 @@ img.ampliable{cursor:zoom-in}
     </div>
   </article>
 
+  <article class="page" id="libro" data-t="Libro para colorear" aria-labelledby="t-lib">
+    <div class="g">
+      <h2 class="todo" id="t-lib">Libro para colorear</h2>
+      <div class="tarj-fila" style="grid-column:1;margin-top:0">
+        <h3>Sistema gráfico</h3>
+        <p>Utiliza <strong>ilustraciones de línea modulada en azul sobre fondo blanco</strong>. La tapa y la contratapa incorporan el amarillo institucional, manteniendo la coherencia con la marca.</p>
+      </div>
+      <div class="tarj-fila c2" style="margin-top:0">
+        <h3>Aplicación</h3>
+        <p>Pensado para <strong>actividades educativas, jornadas y encuentros del refugio</strong>, combina el juego y la lectura para promover la empatía y la adopción responsable.</p>
+      </div>
+      <div class="tarj-fila" style="grid-column:1">
+        <h3>Composición</h3>
+        <p>La tapa presenta a <strong>Balton a gran escala y el título en diagonal</strong>. El interior alterna escenas para colorear con textos sobre su historia, el hogar de rescate y los cuidados cotidianos.</p>
+      </div>
+      <div class="tarj-fila c2">
+        <h3>Continuidad visual</h3>
+        <p>Retoma los <strong>colores, el personaje y el lenguaje ilustrativo institucional</strong>, reforzando el reconocimiento de La Casita de Balton.</p>
+      </div>
+    </div>
+    <div class="placa"><img class="libro-img gota-logo resalta ampliable" tabindex="0" role="button" aria-haspopup="dialog" src="img/libro_mockup.webp" alt="Mockup del libro para colorear: la tapa amarilla con Balton grande y el título ¡Colorea y aprende! en diagonal, la contratapa con una trama de perros, huesos y corazones, y el libro abierto en una doble página con la pregunta ¿Qué es un hogar de rescate?, perros en un patio y perros y gatos descansando en un sillón, dibujados en línea azul" width="1536" height="1024" loading="lazy"></div>
+  </article>
+
+  <article class="page" id="libro-digital" data-t="Libro digital" aria-labelledby="t-libd">
+    <div class="g">
+      <h2 class="todo" id="t-libd">Libro digital</h2>
+    </div>
+    <div class="libd" data-libd="https://heyzine.com/flip-book/0c80e4382b.html">
+      <a class="libd-card resalta" href="https://heyzine.com/flip-book/0c80e4382b.html" target="_blank" rel="noopener">
+        <img class="libd-tapa" src="img/libro_tapa.webp" alt="" width="330" height="478" loading="lazy">
+        <span class="libd-txt">
+          <span class="libd-k">Libro para colorear · versión digital</span>
+          <span class="libd-t">¡Colorea y aprende!</span>
+          <span class="libd-b">Abrir el libro <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="libd-u">heyzine.com/flip-book/0c80e4382b</span>
+        </span>
+      </a>
+    </div>
+  </article>
+
 </div>
 <nav class="pase" aria-label="Navegación de la sección"><div class="pase-iconos"><button type="button" class="ico-btn" data-s="prev" aria-label="Volver a la sección anterior: Piezas digitales"><img src="img/ico_flecha.webp" alt="" style="transform:rotate(-90deg)"></button><button type="button" class="ico-btn" data-s="top" aria-label="Volver al inicio de esta sección"><img src="img/ico_flecha.webp" alt=""></button><button type="button" class="ico-btn" data-s="home" aria-label="Ir a la portada"><img src="img/ico_casa.webp" alt=""></button><button type="button" class="ico-btn" data-s="index" aria-label="Abrir el índice"><img src="img/ico_info.webp" alt=""></button></div><button type="button" class="pase-next" data-s="first"><span class="pase-txt"><small>Fin del manual</small><b>Volver a la portada</b></span><img class="pase-ico" src="img/ico_casa.webp" alt=""></button></nav>
 </section>
@@ -1344,6 +1398,16 @@ img.ampliable{cursor:zoom-in}
     im.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); abrirImagen(im) } });
   });
 
+
+  // Libro digital: embebido cuando la página corre fuera del visor de Claude (por ejemplo, GitHub Pages)
+  (function(){
+    var box=document.querySelector('[data-libd]'); if(!box) return;
+    var h=location.hostname;
+    if(/claude\.ai$|claudeusercontent\.com$|anthropic/.test(h)) return;
+    var f=document.createElement('iframe');
+    f.src=box.getAttribute('data-libd'); f.title='Libro para colorear, versión digital'; f.loading='lazy'; f.allowFullscreen=true;
+    box.innerHTML=''; box.style.flexDirection='column'; box.appendChild(f);
+  })();
   // Zoom
   var zoom=1, zv=document.getElementById('zoom-val');
   function aplicarZoom(){ document.documentElement.style.setProperty('--zoom',zoom); zv.textContent=Math.round(zoom*100)+'%'; try{localStorage.setItem('balton-zoom',zoom)}catch(e){} }
