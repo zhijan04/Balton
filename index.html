@@ -505,6 +505,8 @@ img.ampliable{cursor:zoom-in}
 .libd-card:focus-visible{outline:3px solid var(--azul);outline-offset:4px}
 .libd iframe{width:100%;height:calc(var(--alto-visor,100vh) * .72);border:0;border-radius:calc(8 * var(--pt));background:#fff}
 @container (max-width:720px){ .libd-card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px} .libd-txt{align-items:center} .libd-b{align-self:center} }
+.tabla-link{display:block;margin-top:.35em;font-size:.82em;font-weight:700;color:var(--azul);text-decoration:underline;text-underline-offset:2px}
+.tabla-link:hover{text-decoration-thickness:2px}
 /* Intervención morfológica: el contorno cyan se dibuja con un trazado */
 .trazado{position:relative;margin:0}
 .trazado img{display:block;width:100%;height:auto}
@@ -541,7 +543,7 @@ img.ampliable{cursor:zoom-in}
     <button class="btn" id="et-next" type="button" aria-label="Etapa siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
   </div>
   <span class="sep" aria-hidden="true"></span>
-  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 36</span></label>
+  <label class="pag"><span class="pag-l">Pág.</span><span class="sr-only">Ir a la página</span><input id="pag-input" type="text" inputmode="numeric" value="1" aria-describedby="pag-total"><span id="pag-total">/ 37</span></label>
   <span class="sep" aria-hidden="true"></span>
   <div class="ctrl zoom" role="group" aria-label="Zoom">
     <button class="btn" id="zoom-menos" type="button" aria-label="Alejar"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
@@ -1151,6 +1153,18 @@ img.ampliable{cursor:zoom-in}
           <span class="libd-u">heyzine.com/flip-book/0c80e4382b</span>
         </span>
       </a>
+    </div>
+  </article>
+
+  <article class="page" id="ficha-libro" data-t="Ficha técnica: libro para colorear" aria-labelledby="t-flib">
+    <h2 id="t-flib">Ficha técnica</h2>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th scope="col">Pieza</th><th scope="col">Medida</th><th scope="col">Escala</th><th scope="col">Material y terminación propuestos</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Libro para colorear<a class="tabla-link" href="https://heyzine.com/flip-book/0c80e4382b.html" target="_blank" rel="noopener">Link al libro</a></th><td>A5: 14,8 × 21 cm. 12 páginas, incluidas tapas.</td><td>1:1</td><td>Interior en papel obra de 120 g/m². Tapas en opalina de 250 g/m². Dos broches a caballete.</td></tr>
+        </tbody>
+      </table>
     </div>
   </article>
 
