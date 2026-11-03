@@ -5,9 +5,10 @@ Versión web del manual de identidad visual de **La Casita de Balton**, hogar de
 Se lee como un documento editorial: cada sección se recorre hacia abajo y se pasa a la siguiente con un deslizamiento lateral.
 
 - **Apertura:** portada, consideraciones generales y presentación.
-- **01 Rediseño:** análisis de la marca madre, isologotipo, construcción, versiones, normas de uso, tipografía y paleta.
-- **02 Piezas digitales:** perfil, código cromático, carruseles de adopción y educativo, jornadas, historias y ficha técnica.
-- **03 Piezas analógicas:** tarjeta de presentación, indumentaria, ficha técnica, stickers, pines y su ficha técnica, libro para colorear y su versión digital (flipbook de Heyzine embebido).
+- **01 Rediseño:** análisis de la marca madre, isologotipo, construcción, versiones, normas de uso, alfabetos y colores.
+- **02 Sistema:** paleta cromática, ilustraciones, elementos y patrones.
+- **03 Piezas digitales:** perfil, código cromático, carruseles de adopción y educativo, jornadas, historias y ficha técnica.
+- **04 Piezas analógicas:** tarjeta de presentación, indumentaria, ficha técnica, stickers, pines y su ficha técnica, libro para colorear y su versión digital (flipbook de Heyzine embebido).
 
 ## Ver el sitio
 
