@@ -202,7 +202,7 @@ button{font:inherit;color:inherit}
   display:flex;flex-direction:column;align-items:center;justify-content:center}
 .portada>*{position:relative;z-index:1}
 .portada .huella{position:absolute;z-index:0;width:calc(var(--alto-visor,100vh) * 1.027);left:calc(var(--alto-visor,100vh) * -0.175);top:calc(var(--alto-visor,100vh) * 0.0575);opacity:.42;transform:rotate(18.75deg)}
-.portada .por-top{position:absolute!important;top:max(28px,calc(64 * var(--pt)));left:0;right:0;font-size:max(15px,calc(22 * var(--pt)));color:var(--azul);text-align:center}
+.portada .por-top{font-size:max(15px,calc(22 * var(--pt)));color:var(--azul);text-align:center;margin-top:calc(26 * var(--pt))!important}
 .portada h1{font-size:max(30px,calc(80 * var(--pt)));font-weight:800;line-height:1.1;color:var(--azul);margin:0;white-space:nowrap;letter-spacing:-.005em}
 .portada .por-sub{font-size:max(17px,calc(34 * var(--pt)));font-weight:700;color:var(--azul);text-align:center;margin-top:calc(4 * var(--pt))}
 
@@ -327,7 +327,9 @@ button{font:inherit;color:inherit}
 .cierre-logo{width:calc(330 * var(--pt));align-self:center;justify-self:center}
 
 /* Pase lateral entre etapas */
-.pase{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:20;width:min(calc(100% - 2 * max(20px,env(safe-area-inset-left,0px))),1080px);margin:0 auto calc(14px + env(safe-area-inset-bottom,0px));flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}
+.etapa{container-type:inline-size}
+.pase{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:20;--pt:calc(min(100cqi, 1500px) / 1080);--m:max(calc(70 * var(--pt)), calc((100cqi - 940 * var(--pt)) / 2));align-self:stretch;width:auto;margin:0 var(--m) calc(14px + env(safe-area-inset-bottom,0px));flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}
+@container (max-width:720px){ .pase{--m:20px} }
 .pase>*{pointer-events:auto}
 .pase button{border:0;cursor:pointer;font:inherit;text-align:left}
 .pase-iconos{display:flex;align-items:center;gap:2px;background:color-mix(in srgb,var(--hoja) 92%,transparent);backdrop-filter:blur(6px);border-radius:12px;padding:4px 6px;box-shadow:0 4px 14px rgba(15,30,60,.16)}
@@ -564,10 +566,10 @@ img.ampliable{cursor:zoom-in}
 <section class="etapa" id="apertura" data-i="0" data-nombre="Apertura" data-n="" aria-roledescription="etapa" aria-label="Apertura" tabindex="-1">
 <header class="page portada tapa" id="portada" data-t="Portada" aria-labelledby="t-portada">
     <img class="huella" src="img/paw.webp" alt="" aria-hidden="true">
-    <p class="por-top">Rediseño de marca 2026</p>
     <h1 id="t-portada">Manual de identidad visual</h1>
     <p class="por-sub">La Casita de Balton - Hogar de rescate y adopción</p>
-  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+    <p class="por-top">Rediseño de marca 2026</p>
+  </header>
 <div class="hojas">
 
   
@@ -602,7 +604,7 @@ img.ampliable{cursor:zoom-in}
 <header class="banda tapa">
     <span class="banda-n" aria-hidden="true">01</span>
     <div class="banda-t"><h2 id="t-s01"><span class="sr-only">01 </span>Rediseño</h2><p>Análisis de la marca madre, ecuación del rediseño</p></div>
-  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+  </header>
 <div class="hojas">
 
   
@@ -831,7 +833,7 @@ img.ampliable{cursor:zoom-in}
 <header class="banda tapa">
     <span class="banda-n" aria-hidden="true">02</span>
     <div class="banda-t"><h2 id="t-s02"><span class="sr-only">02 </span>Piezas digitales</h2><p>Redes sociales y ficha técnica</p></div>
-  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+  </header>
 <div class="hojas">
 
   
@@ -977,7 +979,7 @@ img.ampliable{cursor:zoom-in}
 <header class="banda tapa">
     <span class="banda-n" aria-hidden="true">03</span>
     <div class="banda-t"><h2 id="t-s03"><span class="sr-only">03 </span>Piezas analógicas</h2><p>Tarjeta de presentación, indumentaria institucional y ficha técnica</p></div>
-  <span class="tapa-sigue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></header>
+  </header>
 <div class="hojas">
 
   
